@@ -7,7 +7,7 @@ date: 2026-05-11
 
 ## Context
 
-The infinite-mirror effect works because every phone shows a *single* other phone's view, and that other phone is showing a *third* phone's view, and around the ring back to you. If a phone showed all of its peers, you'd just have a video wall (which is `mesh-shared-window`'s job — different app).
+The infinite-mirror effect works because every phone shows a _single_ other phone's view, and that other phone is showing a _third_ phone's view, and around the ring back to you. If a phone showed all of its peers, you'd just have a video wall (which is `mesh-shared-window`'s job — different app).
 
 ## Decision
 
