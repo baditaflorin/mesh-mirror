@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Mirror } from "./features/mirror/Mirror";
 import { SettingsDrawer } from "./features/settings/SettingsDrawer";
 import { appConfig } from "./shared/config";
+import { InviteShareButton } from "@baditaflorin/mesh-common";
 
 const STORAGE = {
   room: `${appConfig.storagePrefix}:room`,
@@ -72,6 +73,7 @@ export function App() {
         facingMode={facing}
       />
 
+      <InviteShareButton appName={appConfig.appName} roomId={roomId} />
       <button
         type="button"
         className="settings-fab"
