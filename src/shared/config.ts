@@ -1,6 +1,9 @@
 export const appConfig = {
   appName: "mesh-mirror",
   storagePrefix: "mesh-mirror",
+  description:
+    "Phones in a ring show each other's live camera feed — an infinite low-fi mirror across the room.",
+  accentHex: "#5ed3ff",
   version: __APP_VERSION__,
   commit: __GIT_COMMIT__,
   repositoryUrl: "https://github.com/baditaflorin/mesh-mirror",
