@@ -20,6 +20,12 @@ export default defineConfig({
     screenshot: "only-on-failure",
     actionTimeout: 5_000,
     navigationTimeout: 10_000,
+    // Headless fake camera: getUserMedia resolves to a synthetic moving
+    // pattern, so the camera -> canvas -> JPEG -> awareness pipeline runs
+    // end to end with no physical device and no permission prompt.
+    launchOptions: {
+      args: ["--use-fake-device-for-media-stream", "--use-fake-ui-for-media-stream"],
+    },
   },
   webServer: {
     // Build (cheap when up-to-date) + preview, so tests always run against
