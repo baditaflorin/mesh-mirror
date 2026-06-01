@@ -5,11 +5,20 @@
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![No backend](https://img.shields.io/badge/backend-none-1a160a?style=flat-square)](docs/adr/0001-deployment-mode.md)
 
-> Peer-to-peer mesh: phones in a ring show each other's live camera feed — phone N's screen shows phone (N+1)'s view, creating a low-fi infinite mirror.
+> Peer-to-peer mesh: each phone shows the live camera of the phone _before_ it in the ring. Chain enough of them and the loop closes — a low-fi, dreamy infinite mirror.
 
 **Live:** https://baditaflorin.github.io/mesh-mirror/
 
-Form a ring of 3–6 phones, all facing inward. Each phone's screen displays the live camera of the phone _before_ it in the ring. Phone 1 shows phone N. Phone 2 shows phone 1. And so on. Hold up your phone — you see what your neighbour is filming — which is the next phone — which is filming someone else — and so on, around the ring.
+## Try it in 30 seconds (2 tabs)
+
+1. Open the [live app](https://baditaflorin.github.io/mesh-mirror/) and grant camera access.
+2. Open the **same URL in a second tab** (or on another phone in the same room).
+3. In the second tab, open Settings (⚙) and set **This phone's position** to `2`.
+4. Arm both with **Open camera & connect**. Each tab now shows the _other's_ camera over the mesh — no server, no account.
+
+That two-peer case is the whole idea in miniature. Scale it up:
+
+Form a ring of 3–6 phones, all facing inward. Each phone's screen displays the live camera of the phone _before_ it in the ring. Phone 1 shows phone N. Phone 2 shows phone 1. And so on. Hold up your phone — you see what your neighbour is filming — which is filming the next phone — and so on, around the ring.
 
 The combination of low fps, soft compression, and a chain that loops back on itself gives a haunting, dream-of-a-mirror feel.
 

@@ -77,6 +77,12 @@ test("peer A's live camera frame propagates to peer B's screen across the mesh",
     await expect(a.locator(".mirror-hud")).toBeVisible();
     await expect(b.locator(".mirror-hud")).toBeVisible();
 
+    // Cross-peer presence must surface in the HUD: once both peers' awareness
+    // states have synced, each phone counts the other and reports "2 in ring".
+    // This fails if presence never crosses the mesh (e.g. wrong room key).
+    await expect(a.locator(".mirror-hud")).toContainText("2 in ring", { timeout: 15_000 });
+    await expect(b.locator(".mirror-hud")).toContainText("2 in ring", { timeout: 15_000 });
+
     // Peer B (index 1) renders peer A's (index 0) frame from awareness.
     const bFrame = b.locator("img.mirror-frame");
     await expect(bFrame).toBeVisible({ timeout: 15_000 });

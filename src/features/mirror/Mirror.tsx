@@ -110,24 +110,28 @@ export function Mirror({ roomId, myIndex, totalPhones, fps, width, quality, faci
       <div className="mirror-arm">
         <h1>mesh-mirror</h1>
         <p>
-          Form a ring with 3–6 phones, all facing inward. Each phone shows the camera feed of the
-          previous phone in the ring. Phone 1 sees phone {totalPhones}'s view; phone 2 sees phone 1;
-          and so on. Hold up your phone and you see what the person across the ring is filming —
-          which is your neighbour — which is you — which is the next person…
+          Each phone shows the live camera of the phone <em>before</em> it in the ring. Chain enough
+          of them and the loop closes on itself — a low-fi, dreamy infinite mirror.
+        </p>
+        <p>
+          <strong>Try it with 2 tabs:</strong> open this room in a second tab (or on another phone),
+          set its position to <strong>2</strong> in Settings, and arm both. Each then shows the
+          other's camera.
         </p>
         <p className="mirror-meta">
           This phone:{" "}
           <strong>
             {myIndex + 1} of {totalPhones}
           </strong>{" "}
-          · {facingMode === "user" ? "front" : "rear"} camera
+          · {facingMode === "user" ? "front" : "rear"} camera · shows phone{" "}
+          <strong>{((myIndex - 1 + totalPhones) % totalPhones) + 1}</strong>
         </p>
         <button type="button" className="mirror-arm-button" onClick={() => setArmed(true)}>
           Open camera & connect
         </button>
         <p className="mirror-hint">
-          Set the phone position and total count in Settings. Low fps + small frame size = the
-          dreamy look. Crank fps in Settings if you want it crisper (and warmer).
+          Set this phone's position and the ring size in Settings (⚙). Low fps + small frames are
+          the dreamy look on purpose — crank them up there if you want it crisper (and warmer).
         </p>
       </div>
     );
@@ -145,7 +149,13 @@ export function Mirror({ roomId, myIndex, totalPhones, fps, width, quality, faci
           <img className="mirror-frame" src={frame} alt="" />
         ) : (
           <div className="mirror-waiting">
-            <p>waiting for phone {((myIndex - 1 + totalPhones) % totalPhones) + 1}…</p>
+            {peers === 0 ? (
+              <p>waiting for another phone to join this room…</p>
+            ) : (
+              <p>
+                connected — waiting for phone {((myIndex - 1 + totalPhones) % totalPhones) + 1}…
+              </p>
+            )}
           </div>
         )}
       </div>
