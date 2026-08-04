@@ -111,6 +111,17 @@ body,
   z-index: 3;
 }
 
+.mirror-retry-button {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  padding: 0.5rem 1.2rem;
+  background: transparent;
+  color: #ff8a8a;
+  border: 1px solid #ff8a8a;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
 .mirror-display {
   flex: 1;
   display: flex;
