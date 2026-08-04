@@ -143,7 +143,21 @@ export function Mirror({ roomId, myIndex, totalPhones, fps, width, quality, faci
         {peers + 1} in ring · phone {myIndex + 1} → shows{" "}
         {((myIndex - 1 + totalPhones) % totalPhones) + 1}
       </div>
-      {error && <p className="mirror-error">{error}</p>}
+      {error && (
+        <div className="mirror-error">
+          <p>{error}</p>
+          <button
+            type="button"
+            className="mirror-retry-button"
+            onClick={() => {
+              setError(null);
+              setArmed(false);
+            }}
+          >
+            Try again
+          </button>
+        </div>
+      )}
       <div className="mirror-display">
         {frame ? (
           <img className="mirror-frame" src={frame} alt="" />

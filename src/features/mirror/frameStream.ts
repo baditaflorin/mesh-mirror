@@ -23,43 +23,54 @@ export async function startFrameStream(
     },
     audio: false,
   });
-  const video = document.createElement("video");
-  video.srcObject = stream;
-  video.muted = true;
-  video.playsInline = true;
-  await video.play();
 
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("2D canvas unavailable");
+  // From here on, the camera is already live (the browser's "camera in use"
+  // indicator is on). Any failure below must release `stream` before
+  // rethrowing — otherwise the track keeps running with no way for the user
+  // to stop it short of closing the tab. See docs/adr for the ring/awareness
+  // design; this is purely a resource-cleanup fix, not a design change.
+  try {
+    const video = document.createElement("video");
+    video.srcObject = stream;
+    video.muted = true;
+    video.playsInline = true;
+    await video.play();
 
-  let lastSent = 0;
-  let stopped = false;
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("2D canvas unavailable");
 
-  const tick = () => {
-    if (stopped) return;
-    const now = performance.now();
-    if (now - lastSent >= 1000 / fps && video.videoWidth > 0) {
-      lastSent = now;
-      const vw = video.videoWidth;
-      const vh = video.videoHeight;
-      const tw = Math.min(width, vw);
-      const th = Math.round((vh / vw) * tw);
-      if (canvas.width !== tw) canvas.width = tw;
-      if (canvas.height !== th) canvas.height = th;
-      ctx.drawImage(video, 0, 0, tw, th);
-      const url = canvas.toDataURL("image/jpeg", jpegQuality);
-      onFrame(url);
-    }
+    let lastSent = 0;
+    let stopped = false;
+
+    const tick = () => {
+      if (stopped) return;
+      const now = performance.now();
+      if (now - lastSent >= 1000 / fps && video.videoWidth > 0) {
+        lastSent = now;
+        const vw = video.videoWidth;
+        const vh = video.videoHeight;
+        const tw = Math.min(width, vw);
+        const th = Math.round((vh / vw) * tw);
+        if (canvas.width !== tw) canvas.width = tw;
+        if (canvas.height !== th) canvas.height = th;
+        ctx.drawImage(video, 0, 0, tw, th);
+        const url = canvas.toDataURL("image/jpeg", jpegQuality);
+        onFrame(url);
+      }
+      requestAnimationFrame(tick);
+    };
     requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
 
-  return {
-    stop: () => {
-      stopped = true;
-      stream.getTracks().forEach((t) => t.stop());
-    },
-    videoEl: video,
-  };
+    return {
+      stop: () => {
+        stopped = true;
+        stream.getTracks().forEach((t) => t.stop());
+      },
+      videoEl: video,
+    };
+  } catch (err) {
+    stream.getTracks().forEach((t) => t.stop());
+    throw err;
+  }
 }
